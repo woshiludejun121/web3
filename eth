@@ -1,0 +1,7 @@
+const Web3 = require('web3');
+
+// 使用 Infura 提供的节点地址连接到以太坊网络
+const web3 = new Web3('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID');
+
+// 或者使用本地节点
+// const web3 = new Web3('http://localhost:8545');
