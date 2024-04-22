@@ -1,0 +1,18 @@
+const Web3 = require('web3');
+
+// 配置一个 Web3 实例
+const web3 = new Web3('https://mainnet.infura.io/v3/your_infura_project_id');
+
+// 要查询的以太坊地址
+const address = '0x1234567890123456789012345678901234567890';
+
+// 获取账户余额
+web3.eth.getBalance(address)
+    .then(balance => {
+        // 将 wei 转换为以太坊
+        const balanceInEth = web3.utils.fromWei(balance, 'ether');
+        console.log('账户余额: ', balanceInEth, ' ETH');
+    })
+    .catch(err => {
+        console.error('出现错误: ', err);
+    });
