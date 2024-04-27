@@ -1,0 +1,58 @@
+import ezdxf
+from ezdxf import units
+
+# 创建一个新的 DXF 文档
+doc = ezdxf.new("R2010")
+doc.units = units.MM  # 设置单位为毫米
+
+# 获取模型空间
+msp = doc.modelspace()
+
+# 定义房屋的整体尺寸
+house_length = 13000  # 13米，单位是毫米
+house_width = 10000   # 10米，单位是毫米
+wall_thickness = 200  # 墙体厚度，单位是毫米
+
+# 房屋外墙
+msp.add_lwpolyline([
+    (0, 0),
+    (house_width, 0),
+    (house_width, house_length),
+    (0, house_length),
+    (0, 0)
+], dxfattribs={"closed": True, "color": 1})
+
+# 主卧室
+master_bedroom_width = 5000
+master_bedroom_length = 4000
+msp.add_lwpolyline([
+    (wall_thickness, wall_thickness),
+    (master_bedroom_width, wall_thickness),
+    (master_bedroom_width, master_bedroom_length),
+    (wall_thickness, master_bedroom_length),
+    (wall_thickness, wall_thickness)
+], dxfattribs={"closed": True, "color": 2})
+
+msp.add_text("主卧室", dxfattribs={"height": 300}).set_pos(
+    (master_bedroom_width / 2, master_bedroom_length / 2), align='CENTER')
+
+# 客厅
+living_room_width = house_width - 2 * wall_thickness
+living_room_length = house_length - 2 * wall_thickness - master_bedroom_length
+
+msp.add_lwpolyline([
+    (wall_thickness, master_bedroom_length + wall_thickness),
+    (living_room_width + wall_thickness, master_bedroom_length + wall_thickness),
+    (living_room_width + wall_thickness, living_room_length + master_bedroom_length + wall_thickness),
+    (wall_thickness, living_room_length + master_bedroom_length + wall_thickness),
+    (wall_thickness, master_bedroom_length + wall_thickness),
+], dxfattribs={"closed": True, "color": 3})
+
+msp.add_text("客厅", dxfattribs={"height": 300}).set_pos(
+    (living_room_width / 2, master_bedroom_length + living_room_length / 2), align='CENTER')
+
+# 保存 DXF 文件
+output_file = "130sqm_house.dxf"
+doc.saveas(output_file)
+
+print(f"DXF 文件已保存至 {output_file}")
