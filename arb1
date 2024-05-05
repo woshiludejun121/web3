@@ -1,0 +1,11 @@
+const Web3 = require('web3');
+
+// 连接到 Arbitrum 的公共节点
+const web3 = new Web3('https://arb1.arbitrum.io/rpc');
+
+// 检查连接状态
+if (web3.isConnected()) {
+    console.log("成功连接到 Arbitrum 节点");
+} else {
+    console.log("无法连接到 Arbitrum 节点");
+}
